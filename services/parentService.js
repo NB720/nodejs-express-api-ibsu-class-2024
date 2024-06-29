@@ -1,7 +1,7 @@
-const StudentModel = require('../models/student');
+const ParentModel = require('../models/parent');
 module.exports = {
     getAll: (req, res) => {
-        StudentModel.find({})
+        ParentModel.find({})
             .then(data => {
                 res.json(data);
             })
@@ -9,25 +9,25 @@ module.exports = {
                 res.status(500).json(error);
             })
     },
-    add: async (req, res) => {
+    getOne: async (req, res) => {
         try {
-            const savedItem = await new StudentModel(req.body).save();
-            res.json(savedItem);
+            const item = await ParentModel.findById(req.params.id);
+            res.json(item);
         } catch (error) {
             res.status(500).json(error);
         }
     },
-    getOne: async (req, res) => {
+    add: async (req, res) => {
         try {
-            const item = await StudentModel.findById(req.params.id);
-            res.json(item);
+            const savedItem = await new ParentModel(req.body).save();
+            res.json(savedItem);
         } catch (error) {
             res.status(500).json(error);
         }
     },
     delete: async (req, res) => {
         try {
-            await StudentModel.deleteOne({ _id: req.params.id });
+            await ParentModel.deleteOne({ _id: req.params.id });
             res.json({ success: true });
         } catch (error) {
             res.status(500).json(error);
@@ -35,7 +35,7 @@ module.exports = {
     },
     update: async (req, res) => {
         try {
-            const item = await StudentModel.findByIdAndUpdate(req.params.id,
+            const item = await ParentModel.findByIdAndUpdate(req.params.id,
                 { $set: req.body },
                 {
                     new: true
